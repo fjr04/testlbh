@@ -36,8 +36,47 @@
             -webkit-background-clip: text; color: transparent;
         }
 
-        .scrolled-nav { background-color: rgba(4, 11, 22, 0.98); backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding-top: 0.8rem; padding-bottom: 0.8rem; }
-        .transparent-nav { background-color: transparent; padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        /* =============================================
+           LIQUID GLASS SYSTEM
+           ============================================= */
+
+        /* Navbar atas: transition smooth pada semua properti visual */
+        #navbar {
+            transition: background 0.45s ease,
+                        backdrop-filter 0.45s ease,
+                        -webkit-backdrop-filter 0.45s ease,
+                        box-shadow 0.45s ease,
+                        border-color 0.45s ease,
+                        padding 0.45s ease;
+        }
+
+        /* Glass untuk navbar atas saat scroll / menu buka */
+        .glass-effect {
+            background: rgba(10, 18, 35, 0.72) !important;
+            backdrop-filter: blur(28px) saturate(180%) brightness(1.08) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.08) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.35) !important;
+        }
+
+        /* Dropdown burger — styling dikontrol via JS inline style (lihat script) */
+
+        /* scrolled-nav hanya atur padding */
+        .scrolled-nav { 
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+        }
+        
+        .transparent-nav { 
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+            border-bottom-color: transparent !important;
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem; 
+        }
+        /* ============================================= */
 
         .hero-overlay { background: linear-gradient(90deg, rgba(4,11,22,1) 0%, rgba(4,11,22,0.95) 45%, rgba(4,11,22,0.2) 100%); }
         @media (max-width: 768px) {
@@ -81,18 +120,37 @@
         .fade-1 { animation: crossfade 12s infinite 0s; }
         .fade-2 { animation: crossfade 12s infinite 4s; }
         .fade-3 { animation: crossfade 12s infinite 8s; }
+
+        /* =============================================
+           FIX 2: NAVBAR RESPONSIVE — breakpoint naik ke
+           1024px (lg) agar tidak dempet di tablet
+           ============================================= */
+        .nav-links { display: none; }
+        .nav-cta  { display: none; }
+        .nav-burger { display: block; }
+
+        @media (min-width: 1024px) {
+            .nav-links  { display: flex; }
+            .nav-cta    { display: block; }
+            .nav-burger { display: none; }
+        }
+        /* ============================================= */
     </style>
 </head>
 <body class="antialiased selection:bg-secondary selection:text-black">
 
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 transparent-nav">
+    <!-- =============================================
+         NAVBAR — class md:hidden / md:flex diganti
+         nav-burger / nav-links agar breakpointnya lg
+         ============================================= -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 transparent-nav">
         <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
             
             <a href="#" class="flex items-center group">
                 <img src="assets/images/logo.png" alt="ABS Law Office" class="h-10 md:h-12 object-contain transition-transform duration-500 group-hover:scale-105" onerror="this.outerHTML='<h1 class=\'font-serif text-2xl font-bold text-gold tracking-widest\'>ABS LAW OFFICE</h1>'">
             </a>
 
-            <div class="hidden md:flex space-x-10 font-medium text-[12px] tracking-[0.1em] uppercase">
+            <div class="nav-links space-x-10 font-medium text-[12px] tracking-[0.1em] uppercase">
                 <a href="#home" class="hover:text-secondary transition-colors text-white">Beranda</a>
                 <a href="#tentang" class="hover:text-secondary transition-colors">Tentang</a>
                 <a href="#layanan" class="hover:text-secondary transition-colors">Layanan</a>
@@ -100,16 +158,17 @@
                 <a href="#tim" class="hover:text-secondary transition-colors">Tim Pakar</a>
             </div>
             
-            <a href="#kontak" class="hidden md:block btn-gold px-7 py-3 rounded font-bold tracking-wider uppercase text-[10px]">
+            <a href="#kontak" class="nav-cta btn-gold px-7 py-3 rounded font-bold tracking-wider uppercase text-[10px]">
                 Jadwalkan Konsultasi
             </a>
             
-            <button id="mobile-menu-btn" class="md:hidden text-2xl text-secondary focus:outline-none">
+            <button id="mobile-menu-btn" class="nav-burger text-2xl text-secondary focus:outline-none">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
         
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-primary/98 backdrop-blur-xl shadow-2xl">
+        <!-- Mobile dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full">
             <div class="flex flex-col px-6 py-6 space-y-5 text-center uppercase tracking-widest text-xs font-medium">
                 <a href="#home" class="mobile-link text-white hover:text-secondary">Beranda</a>
                 <a href="#tentang" class="mobile-link text-white hover:text-secondary">Tentang</a>
@@ -303,10 +362,8 @@
 
                 <div class="relative overflow-hidden rounded-lg h-[300px] bg-primary group shadow-2xl shadow-black">
                     <div class="absolute inset-0 z-0">
-                        <img src="assets/images/activity-2/1.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Istana Negara" onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=600'">                                      <img src="assets/images/activity-2/2.jpg" class="fade-slide fade-2 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Istana Negara" onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=600'">
+                        <img src="assets/images/activity-2/1.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Istana Negara" onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=600'">
                         <img src="assets/images/activity-2/2.jpg" class="fade-slide fade-2 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Istana Negara" onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=600'">
-                        <img src="assets/images/activity-2/3.jpg" class="fade-slide fade-2 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Istana Negara" onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=600'">
-
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#040b16] via-[#040b16]/70 to-transparent pointer-events-none z-10"></div>
                     <div class="absolute bottom-0 p-8 pointer-events-none w-full z-20">
@@ -318,9 +375,6 @@
                 <div class="relative overflow-hidden rounded-lg h-[300px] bg-primary group shadow-2xl shadow-black">
                     <div class="absolute inset-0 z-0">
                         <img src="assets/images/activity-3/1.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Gugatan Wanprestasi" onerror="this.src='https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=600'">
-                        <img src="assets/images/activity-3/2.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Gugatan Wanprestasi" onerror="this.src='https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=600'">
-                        <img src="assets/images/activity-3/3.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Gugatan Wanprestasi" onerror="this.src='https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=600'">
-
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#040b16] via-[#040b16]/70 to-transparent pointer-events-none z-10"></div>
                     <div class="absolute bottom-0 p-8 pointer-events-none w-full z-20">
@@ -332,8 +386,6 @@
                 <div class="relative overflow-hidden rounded-lg h-[300px] bg-primary group shadow-2xl shadow-black">
                     <div class="absolute inset-0 z-0">
                         <img src="assets/images/activity-4/1.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="PMII" onerror="this.src='https://images.unsplash.com/photo-1436450412740-6b988f486c6b?q=80&w=600'">
-                        <img src="assets/images/activity-4/2.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="PMII" onerror="this.src='https://images.unsplash.com/photo-1436450412740-6b988f486c6b?q=80&w=600'">
-                        <img src="assets/images/activity-4/3.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="PMII" onerror="this.src='https://images.unsplash.com/photo-1436450412740-6b988f486c6b?q=80&w=600'">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#040b16] via-[#040b16]/70 to-transparent pointer-events-none z-10"></div>
                     <div class="absolute bottom-0 p-8 pointer-events-none w-full z-20">
@@ -345,8 +397,6 @@
                 <div class="relative overflow-hidden rounded-lg h-[300px] bg-primary group shadow-2xl shadow-black">
                     <div class="absolute inset-0 z-0">
                         <img src="assets/images/activity-5/1.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Asuransi" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600'">
-                        <img src="assets/images/activity-5/2.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Asuransi" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600'">
-                        <img src="assets/images/activity-5/3.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Asuransi" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600'">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#040b16] via-[#040b16]/70 to-transparent pointer-events-none z-10"></div>
                     <div class="absolute bottom-0 p-8 pointer-events-none w-full z-20">
@@ -358,8 +408,6 @@
                 <div class="relative overflow-hidden rounded-lg h-[300px] bg-primary group shadow-2xl shadow-black">
                     <div class="absolute inset-0 z-0">
                         <img src="assets/images/activity-6/1.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Pajakind" onerror="this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600'">
-                        <img src="assets/images/activity-6/2.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Pajakind" onerror="this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600'">
-                        <img src="assets/images/activity-6/3.jpg" class="fade-slide fade-1 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Pajakind" onerror="this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600'">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#040b16] via-[#040b16]/70 to-transparent pointer-events-none z-10"></div>
                     <div class="absolute bottom-0 p-8 pointer-events-none w-full z-20">
@@ -526,7 +574,6 @@
             <button onclick="closeModal('modal-andi')" class="absolute top-10 right-6 text-gray-400 hover:text-white text-4xl transition-colors">&times;</button>
             <h2 class="text-3xl md:text-4xl text-white font-serif mb-2">Andi Baroar Nasution, S.H., M.H.</h2>
             <p class="text-secondary text-xs uppercase tracking-widest mb-10 border-b border-gray-800 pb-4">Pengalaman Karir / Managing Partner</p>
-            
             <div class="space-y-4">
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">Pernah bergabung pada Nugraha Kurnia Purwito & Partners menjabat sebagai Associate pada tahun 2006 sampai dengan 2007.</p></div>
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">Pernah bergabung pada Law Office D.I Nugraha & Partners sebagai Para Legal tahun 2007 sampai dengan Tahun 2008.</p></div>
@@ -567,7 +614,6 @@
             <button onclick="closeModal('modal-adam')" class="absolute top-10 right-6 text-gray-400 hover:text-white text-4xl transition-colors">&times;</button>
             <h2 class="text-3xl md:text-4xl text-white font-serif mb-2">Adam Suwahyo, S.H., M.H.</h2>
             <p class="text-secondary text-xs uppercase tracking-widest mb-10 border-b border-gray-800 pb-4">Pengalaman Karir</p>
-            
             <div class="space-y-6">
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">Sekretaris Lembaga Bantuan Hukum & Advokasi Publik Pimpinan Daerah Muhammadiyah kabupaten Bogor (Periode 2022-2027).</p></div>
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">Anggota Majelis Hukum dan HAM PCM Cileungsi (Periode 2022-2027).</p></div>
@@ -581,7 +627,6 @@
             <button onclick="closeModal('modal-widi')" class="absolute top-10 right-6 text-gray-400 hover:text-white text-4xl transition-colors">&times;</button>
             <h2 class="text-3xl md:text-4xl text-white font-serif mb-2">Widi Faris Fauzan, S.H., M.H.</h2>
             <p class="text-secondary text-xs uppercase tracking-widest mb-10 border-b border-gray-800 pb-4">Pengalaman Karir</p>
-            
             <div class="space-y-6">
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">(15 Maret 2016-30 Maret 2017) Pada periode ini saya bekerja di P.T. INDOMARCO PRISMATAMA sebagai bagian dari divisi Finance (Keuangan).</p></div>
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">(11 September 2017 - 31 Maret 2018) Pada periode ini saya bekerja di P.T. ASJAYA MUKTI GRAHA (ANNIELAND BRANCH OFFICE) sebagai bagian dari divisi Purchasing (Pengadaan).</p></div>
@@ -601,7 +646,6 @@
             <button onclick="closeModal('modal-caryo')" class="absolute top-10 right-6 text-gray-400 hover:text-white text-4xl transition-colors">&times;</button>
             <h2 class="text-3xl md:text-4xl text-white font-serif mb-2">Caryo Saputra, S.H.</h2>
             <p class="text-secondary text-xs uppercase tracking-widest mb-10 border-b border-gray-800 pb-4">Pengalaman Karir</p>
-            
             <div class="space-y-6">
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">Asisiten Dosen Universitas Pancasila dan STIH Adhyaksa (Periode 2022-2024).</p></div>
                 <div class="timeline-item"><p class="text-gray-300 text-sm font-light">Wakil Sekretaris Jendral LBH Nusantara Bersinar Keadilan (Periode 2024-2028).</p></div>
@@ -613,7 +657,7 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // 1. Reveal Animation (Stabil, tidak menyebabkan infinite loop/loading)
+        // 1. Reveal Animation
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -625,24 +669,80 @@
         }, { threshold: 0.1 }); 
         revealElements.forEach(el => revealObserver.observe(el));
 
-        // 2. Navbar Stickiness
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled-nav');
-                navbar.classList.remove('transparent-nav');
-            } else {
-                navbar.classList.remove('scrolled-nav');
-                navbar.classList.add('transparent-nav');
-            }
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                revealElements.forEach(el => el.classList.add('active'));
+            }, 800); 
         });
 
-        // 3. Mobile Menu Toggle
+        // 2 & 3. NAVBAR + MOBILE MENU — satu fungsi terpusat
+        const navbar = document.getElementById('navbar');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Inline style untuk dropdown — tidak bisa dikalahkan CSS class apapun
+        const DROPDOWN_GLASS = {
+            background: 'rgba(10, 18, 35, 0.88)',
+            backdropFilter: 'blur(28px) saturate(180%) brightness(1.08)',
+            webkitBackdropFilter: 'blur(28px) saturate(180%) brightness(1.08)',
+            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            boxShadow: '0 12px 32px rgba(0,0,0,0.5)'
+        };
+
+        function applyDropdownGlass() {
+            Object.assign(mobileMenu.style, DROPDOWN_GLASS);
+        }
+
+        function clearDropdownGlass() {
+            mobileMenu.style.background = '';
+            mobileMenu.style.backdropFilter = '';
+            mobileMenu.style.webkitBackdropFilter = '';
+            mobileMenu.style.borderBottom = '';
+            mobileMenu.style.boxShadow = '';
+        }
+
+        function updateNavStyle() {
+            const isScrolled = window.scrollY > 50;
+            const isMenuOpen = !mobileMenu.classList.contains('hidden');
+            const needsGlass = isScrolled || isMenuOpen;
+
+            if (needsGlass) {
+                navbar.classList.add('scrolled-nav', 'glass-effect');
+                navbar.classList.remove('transparent-nav');
+            } else {
+                navbar.classList.remove('scrolled-nav', 'glass-effect');
+                navbar.classList.add('transparent-nav');
+            }
+
+            // Dropdown selalu glass saat terbuka, apapun posisi scroll
+            if (isMenuOpen) {
+                applyDropdownGlass();
+            } else {
+                clearDropdownGlass();
+            }
+        }
+
+        // Panggil setiap kali scroll
+        window.addEventListener('scroll', updateNavStyle);
+
+        // Panggil setiap kali burger ditekan
         const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
-        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-        mobileLinks.forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
+
+        btn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            updateNavStyle();
+        });
+
+        // Tutup menu & update style saat link diklik
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                updateNavStyle();
+            });
+        });
+
+        // Jalankan sekali saat halaman load agar kondisi awal benar
+        updateNavStyle();
 
         // 4. Modal Profil Fullscreen
         function openModal(id) {
@@ -663,7 +763,7 @@
             });
         });
 
-        // 6. Controller Custom Pop-up Alert
+        // 6. Custom Alert Popup
         function showCustomAlert(title, message, isSuccess) {
             const modal = document.getElementById('customAlert');
             const alertBox = document.getElementById('alertBox');
@@ -684,6 +784,7 @@
             modal.classList.remove('opacity-0', 'invisible');
             alertBox.classList.remove('scale-95');
         }
+
         function closeCustomAlert() {
             const modal = document.getElementById('customAlert');
             const alertBox = document.getElementById('alertBox');
@@ -691,7 +792,7 @@
             alertBox.classList.add('scale-95');
         }
 
-        // 7. Pengiriman Form Email via AJAX Formspree (Tanpa Redirect)
+        // 7. Form Email via AJAX Formspree
         const contactForm = document.getElementById('contactForm');
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault(); 
@@ -716,30 +817,30 @@
                     showCustomAlert('Pesan Terkirim!', `Terima kasih, Bapak/Ibu ${name}. Permohonan konsultasi Anda telah masuk ke sistem ABS Law Office. Representatif kami akan merespons dalam 1x24 jam.`, true);
                     form.reset();
                 } else {
-                    showCustomAlert('Gagal Mengirim', 'Maaf, terjadi kesalahan saat mengirim pesan atau URL Formspree Anda belum dikonfigurasi dengan benar. Silakan coba lagi.', false);
+                    showCustomAlert('Gagal Mengirim', 'Maaf, terjadi kesalahan saat mengirim pesan atau ID Formspree Anda tidak valid. Silakan coba lagi.', false);
                 }
             } catch (error) {
-                showCustomAlert('Koneksi Bermasalah', 'Terjadi kesalahan jaringan. Silakan hubungi kami langsung melalui tombol WhatsApp.', false);
+                showCustomAlert('Koneksi Bermasalah', 'Terjadi kesalahan jaringan saat mencoba mengirim pesan. Silakan gunakan layanan WhatsApp kami sebagai alternatif.', false);
             } finally {
                 btnSubmit.innerHTML = originalText;
                 btnSubmit.disabled = false;
             }
         });
 
-        // 8. Kirim ke WhatsApp + Validasi Kustom Pop-Up
+        // 8. Kirim ke WhatsApp
         function sendToWA() {
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const subject = document.getElementById('subject').value.trim();
             const message = document.getElementById('message').value.trim();
 
-            if(!name || !subject || !message) {
-                showCustomAlert("Formulir Belum Lengkap", "Harap isi Nama, Subjek, dan Pesan Anda sebelum melanjutkan konsultasi via WhatsApp.", false);
+            if(!name || !email || !subject || !message) {
+                showCustomAlert("Formulir Belum Lengkap", "Harap isi Nama, Email, Subjek, dan Pesan Anda di dalam formulir ini sebelum melanjutkan konsultasi via WhatsApp agar kami dapat melayani Anda dengan lebih cepat.", false);
                 return;
             }
 
             const textWA = `Halo ABS Law Office,%0A%0APerkenalkan, nama saya: ${name}%0AEmail: ${email}%0ATerkait keperluan: ${subject}%0A%0A${message}`;
-            window.open(`https://wa.me/6288276277926?text=${textWA}`, '_blank');
+            window.open(`https://wa.me/6285280048234?text=${textWA}`, '_blank');
         }
     </script>
 </body>
